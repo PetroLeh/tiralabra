@@ -9,4 +9,6 @@ Dokumentaation kieli tulee olemaan suomi, koodissa kuitenkin käytän englantia.
 Käytettävä ohjelmointikieli on Java.
 
 Muut kielet, joista kokemusta:
- - C#, Python, JavaScript
+ - C#
+ - Python
+ - JavaScript
