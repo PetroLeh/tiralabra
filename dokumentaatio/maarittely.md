@@ -1,12 +1,14 @@
 ## Alustava määrittelydokumentti
 
-Alustavana tavoitteena luolaston/labyrintin tuottava algoritmi.
-Tarkempia yksityiskohtia en vielä osaa sanoa, kuten toteutanko useamman
-algoritmin vertailua vai yhden luolaston tuottavan algoritmin.
+Tarkoituksena on toteuttaa ainakin kaksi labyrintin tuottavaa algoritmia (DFS ja Kruskal) ja verrata niiden
+tuottamien labyrinttien 'vaativuutta'. Vertailuaineistona on ajat, joita leveyssuuntaisella haulla kestää löytää reitti kulmasta 
+vastakkaiseen kulmaan.
 
 Dokumentaation kieli tulee olemaan suomi, koodissa kuitenkin käytän englantia.
 
 Käytettävä ohjelmointikieli on Java.
 
 Muut kielet, joista kokemusta:
- - C#, Python, JavaScript
+ - C#
+ - Python
+ - JavaScript
