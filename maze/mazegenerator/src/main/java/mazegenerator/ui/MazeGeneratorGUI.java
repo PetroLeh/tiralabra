@@ -8,11 +8,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import mazegenerator.util.Cell;
@@ -26,7 +26,7 @@ public class MazeGeneratorGUI extends Application {
     private Maze maze;
 
     private final int ROWS = 50;
-    private final int COLUMNS = 70;
+    private final int COLUMNS = 50;
     private final int CELL_SIZE = 10;
     private final int WALL_SIZE = 2;
 
@@ -35,7 +35,7 @@ public class MazeGeneratorGUI extends Application {
     private final Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     private final Label infoBar = new Label();
     private BorderPane pane = new BorderPane();
-    
+
     private boolean generated = false;
     private int pathIndex = 0;
     private double anchorX;
@@ -45,33 +45,35 @@ public class MazeGeneratorGUI extends Application {
 
     @Override
     public void start(Stage stage) {
-
+     
         HBox tools = tools();
-        Circle pathPointer = new Circle(0, 0, 5);
-        pathPointer.setFill(Color.LIME);
-        pathPointer.setVisible(false);
 
         pane.setTop(tools);
         pane.setCenter(canvas);
+        Circle pathPointer = new Circle(0, 0, CELL_SIZE / 2);
+        pathPointer.setFill(Color.LIME);
+        pathPointer.setVisible(false);
         pane.getChildren().add(pathPointer);
 
         infoBar.setText("Click generate to generate a new maze...");
 
         pane.setPadding(new Insets(10, 10, 10, 10));
- 
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         new AnimationTimer() {
             public void handle(long now) {
-                if (generated && pathIndex < generator.path().size()) {
+                if (generated && pathIndex < generator.creationPath().size()) {
                     pathPointer.setVisible(true);
-                    Cell c = generator.path().get(pathIndex);
+                    Cell c = generator.creationPath().get(pathIndex);
                     pathIndex++;
-                    
-                    double x = anchorX + c.column() * (CELL_SIZE + WALL_SIZE);
-                    double y = anchorY + c.row() * (CELL_SIZE + WALL_SIZE);
-                   
-                    pane.getChildren().add(new Rectangle(x + WALL_SIZE + 1, y + WALL_SIZE + 1, CELL_SIZE - WALL_SIZE, CELL_SIZE - WALL_SIZE));
-                    pathPointer.setTranslateX(x + CELL_SIZE / 2);
-                    pathPointer.setTranslateY(y + CELL_SIZE / 2);
+
+                    double x = anchorX + c.column() * (CELL_SIZE + WALL_SIZE) + CELL_SIZE / 2;
+                    double y = anchorY + c.row() * (CELL_SIZE + WALL_SIZE) + CELL_SIZE / 2;
+                    pathPointer.setTranslateX(x);
+                    pathPointer.setTranslateY(y);
+
+                    drawWalls(gc, c);
+
                     infoBar.setText("cell " + c.toString());
                 }
             }
@@ -83,34 +85,17 @@ public class MazeGeneratorGUI extends Application {
         stage.show();
     }
 
-    private void drawMaze(Maze maze) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        System.out.println("Drawing " + maze);
-
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-
-        gc.setFill(Color.BLACK);
-        for (Cell cell : maze.cells()) {
-            drawWalls(gc, cell);
-        }
-    }
-
     private void drawWalls(GraphicsContext gc, Cell cell) {
         int r = cell.row();
         int c = cell.column();
 
-        if (cell.hasWall(Wall.TOP)) {
-            gc.fillRect(c * (CELL_SIZE + WALL_SIZE), r * (CELL_SIZE + WALL_SIZE), CELL_SIZE + WALL_SIZE, WALL_SIZE);
-        }
+        gc.setFill(Color.BLACK);
+
         if (cell.hasWall(Wall.BOTTOM)) {
             gc.fillRect(c * (CELL_SIZE + WALL_SIZE), (r + 1) * (CELL_SIZE + WALL_SIZE), CELL_SIZE + WALL_SIZE, WALL_SIZE);
         }
         if (cell.hasWall(Wall.LEFT)) {
             gc.fillRect(c * (CELL_SIZE + WALL_SIZE), r * (CELL_SIZE + WALL_SIZE), WALL_SIZE, CELL_SIZE + WALL_SIZE);
-        }
-        if (cell.hasWall(Wall.RIGHT)) {
-            gc.fillRect((c + 1) * (CELL_SIZE + WALL_SIZE), r * (CELL_SIZE + WALL_SIZE), WALL_SIZE, CELL_SIZE + WALL_SIZE);
         }
     }
 
@@ -119,10 +104,11 @@ public class MazeGeneratorGUI extends Application {
         Button generateButton = new Button("generate");
         generateButton.setOnAction(e -> {
             this.maze = generator.generate(ROWS, COLUMNS);
-            drawMaze(maze);
+
             anchorX = canvas.getLocalToParentTransform().getTx();
             anchorY = canvas.getLocalToParentTransform().getTy();
             generated = true;
+            cleanCanvas(canvas);
             infoBar.setText("generated " + maze);
         });
 
@@ -130,6 +116,11 @@ public class MazeGeneratorGUI extends Application {
         t.setSpacing(20);
 
         return t;
+    }
+
+    private void cleanCanvas(Canvas canvas) {
+        canvas.getGraphicsContext2D().setFill(Color.WHITE);
+        canvas.getGraphicsContext2D().fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     private String generatorInfo() {

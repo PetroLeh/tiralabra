@@ -55,34 +55,28 @@ public class Maze {
     public void removeWall(Cell first, Cell second) {
         if (first.row() == second.row()) {
             if (first.column() < second.column()) {
-                first.removeWall(Wall.RIGHT);
                 second.removeWall(Wall.LEFT);
             } else {
                 first.removeWall(Wall.LEFT);
-                second.removeWall(Wall.RIGHT);
             }
         } else {
             if (first.row() < second.row()) {
                 first.removeWall(Wall.BOTTOM);
-                second.removeWall(Wall.TOP);
             } else {
-                first.removeWall(Wall.TOP);
                 second.removeWall(Wall.BOTTOM);
             }
         }
 
     }
-
-    public ArrayList<Cell> cells() {
-        ArrayList<Cell> cells = new ArrayList<>();
+    
+    public void clearNeighbours() {
         for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-                cells.add(grid[row][column]);
+            for (int column = 0; column < columns; column++)  {
+                grid[row][column].clearNeighbours();
             }
         }
-        return cells;
     }
-
+ 
     public int rows() {
         return this.rows;
     }

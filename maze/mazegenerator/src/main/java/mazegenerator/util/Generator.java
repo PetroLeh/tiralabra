@@ -10,5 +10,5 @@ public interface Generator {
     
     Maze generate(int rows, int columns);
     
-    ArrayList<Cell> path();
+    ArrayList<Cell> creationPath();
 }

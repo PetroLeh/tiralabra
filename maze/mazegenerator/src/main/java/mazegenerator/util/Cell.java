@@ -7,7 +7,7 @@ public class Cell {
 
     private int row, column;
     private boolean visited,
-            rightWall, leftWall, topWall, bottomWall;
+            leftWall, bottomWall;
 
     private ArrayList<Cell> neighbours;
 
@@ -16,9 +16,7 @@ public class Cell {
         this.column = column;
         this.visited = false;
 
-        this.rightWall = true;
         this.leftWall = true;
-        this.topWall = true;
         this.bottomWall = true;
 
         this.neighbours = new ArrayList<>();
@@ -34,30 +32,20 @@ public class Cell {
 
     public void removeWall(Wall wall) {
         switch (wall) {
-            case TOP:
-                this.topWall = false;
-                break;
             case BOTTOM:
                 this.bottomWall = false;
                 break;
             case LEFT:
                 this.leftWall = false;
-                break;
-            case RIGHT:
-                this.rightWall = false;
         }
     }
 
     public boolean hasWall(Wall wall) {
         switch (wall) {
-            case TOP:
-                return this.topWall;
             case BOTTOM:
                 return this.bottomWall;
             case LEFT:
                 return this.leftWall;
-            case RIGHT:
-                return this.rightWall;
         }
         return false;
     }
@@ -68,6 +56,10 @@ public class Cell {
 
     public ArrayList<Cell> neighbours() {
         return this.neighbours;
+    }
+    
+    public void clearNeighbours() {
+        this.neighbours.clear();
     }
 
     public ArrayList<Cell> getNonVisitedNeighbours() {
