@@ -1,7 +1,5 @@
 package mazegenerator.util;
 
-import java.util.ArrayList;
-
 public class Maze {
 
     private int rows, columns;
@@ -53,14 +51,15 @@ public class Maze {
     }
 
     public void removeWall(Cell first, Cell second) {
-        if (first.row() == second.row()) {
-            if (first.column() < second.column()) {
+        
+        if (first.row() == second.row()) {              // Cells are on the same row so we need to
+            if (first.column() < second.column()) {     // remove the left wall of the cell on the right
                 second.removeWall(Wall.LEFT);
             } else {
                 first.removeWall(Wall.LEFT);
             }
-        } else {
-            if (first.row() < second.row()) {
+        } else {                                        // Cells are on the same column so we remove
+            if (first.row() < second.row()) {           // the bottom wall of the cell on top
                 first.removeWall(Wall.BOTTOM);
             } else {
                 second.removeWall(Wall.BOTTOM);
