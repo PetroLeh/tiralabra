@@ -75,6 +75,39 @@ public class Maze {
             }
         }
     }
+    
+    public void updateGraph() {
+        clearNeighbours();
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+
+                if (row > 0) {
+                    Cell c = getCell(row - 1, column);
+                    if (!c.hasWall(Wall.BOTTOM)) {
+                        getCell(row, column).addNeighbour(c);
+                    }
+                }
+                if (row < rows - 1) {
+                    Cell c = getCell(row, column);
+                    if (!c.hasWall(Wall.BOTTOM)) {
+                        c.addNeighbour(getCell(row + 1, column));
+                    }
+                }
+                if (column > 0) {
+                    Cell c = getCell(row, column);
+                    if (!c.hasWall(Wall.LEFT)) {
+                        c.addNeighbour(getCell(row, column - 1));
+                    }
+                }
+                if (column < columns - 1) {
+                    Cell c = getCell(row, column + 1);
+                    if (!c.hasWall(Wall.LEFT)) {
+                        getCell(row, column).addNeighbour(c);
+                    }
+                }
+            }
+        }
+    }
  
     public int rows() {
         return this.rows;

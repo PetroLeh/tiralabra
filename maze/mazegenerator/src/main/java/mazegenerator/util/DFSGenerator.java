@@ -66,36 +66,8 @@ public class DFSGenerator implements Generator {
         System.out.println("time elapsed: " + elapsed + " ms | maximum stack size: " + maxStackSize);
 
         // update the neighbour graph to match the generated maze
-        maze.clearNeighbours();
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
-
-                if (row > 0) {
-                    Cell c = maze.getCell(row - 1, column);
-                    if (!c.hasWall(Wall.BOTTOM)) {
-                        maze.getCell(row, column).addNeighbour(c);
-                    }
-                }
-                if (row < rows - 1) {
-                    Cell c = maze.getCell(row, column);
-                    if (!c.hasWall(Wall.BOTTOM)) {
-                        c.addNeighbour(maze.getCell(row + 1, column));
-                    }
-                }
-                if (column > 0) {
-                    Cell c = maze.getCell(row, column);
-                    if (!c.hasWall(Wall.LEFT)) {
-                        c.addNeighbour(maze.getCell(row, column - 1));
-                    }
-                }
-                if (column < columns - 1) {
-                    Cell c = maze.getCell(row, column + 1);
-                    if (!c.hasWall(Wall.LEFT)) {
-                        maze.getCell(row, column).addNeighbour(c);
-                    }
-                }
-            }
-        }
+        maze.updateGraph();
+        
         return maze;
     }
 
