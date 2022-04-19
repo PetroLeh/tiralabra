@@ -51,13 +51,19 @@ public class Cell {
     }
 
     public void addNeighbour(Cell cell) {
-        this.neighbours.add(cell);
+        if (isNextTo(cell)) {
+            this.neighbours.add(cell);
+        }
+    }
+
+    public boolean isNextTo(Cell cell) {
+        return (Math.abs(this.row - cell.row()) + Math.abs(this.column - cell.column()) == 1);
     }
 
     public ArrayList<Cell> neighbours() {
         return this.neighbours;
     }
-    
+
     public void clearNeighbours() {
         this.neighbours.clear();
     }
@@ -83,6 +89,16 @@ public class Cell {
 
     public int column() {
         return this.column;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Cell)) {
+            return false;
+        }
+        Cell other = (Cell) object;
+
+        return (other.row() == this.row && other.column() == this.column);
     }
 
     public String toString() {
