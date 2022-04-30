@@ -100,6 +100,11 @@ public class Cell {
 
         return (other.row() == this.row && other.column() == this.column);
     }
+    
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
 
     public String toString() {
         return "@ c: " + this.column + ", r: " + this.row;

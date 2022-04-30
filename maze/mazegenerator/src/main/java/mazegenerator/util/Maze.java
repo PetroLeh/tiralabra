@@ -50,7 +50,7 @@ public class Maze {
         return this.grid[row][column];
     }
 
-    public void removeWall(Cell first, Cell second) {
+    public void removeWall(Cell first, Cell second) {        
         
         if (first.row() == second.row()) {              // Cells are on the same row so we need to
             if (first.column() < second.column()) {     // remove the left wall of the cell on the right
@@ -108,7 +108,7 @@ public class Maze {
             }
         }
     }
- 
+     
     public int rows() {
         return this.rows;
     }

@@ -10,7 +10,7 @@ public class DFSGenerator implements Generator {
     private Cell current;
     private final Random random = new Random();
     private ArrayList<Cell> creationPath;       // not used in actual creation of the maze, but to trace
-    // the path after the maze is created
+                                                // the path after the maze is created
 
     public DFSGenerator() {
         this.stack = new Stack<>();
@@ -19,7 +19,7 @@ public class DFSGenerator implements Generator {
     }
 
     /**
-     * Returns an empty maze with no walls in it
+     * Returns an empty maze with all walls
      *
      * @param rows number of rows in the maze
      * @param columns number of columns in the maze
@@ -34,6 +34,7 @@ public class DFSGenerator implements Generator {
     @Override
     public Maze generate(int rows, int columns) {
         System.out.println("Generating maze using " + toString());
+        this.creationPath = new ArrayList<>();
         Maze maze = initMaze(rows, columns);
         this.current = maze.getCell(0, 0);
         current.setVisited();
@@ -67,7 +68,7 @@ public class DFSGenerator implements Generator {
 
         // update the neighbour graph to match the generated maze
         maze.updateGraph();
-        
+
         return maze;
     }
 

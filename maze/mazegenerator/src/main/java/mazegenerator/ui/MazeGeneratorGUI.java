@@ -1,5 +1,6 @@
 package mazegenerator.ui;
 
+import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import mazegenerator.util.Cell;
 import mazegenerator.util.DFSGenerator;
 import mazegenerator.util.Generator;
+import mazegenerator.util.KruskalGenerator;
 import mazegenerator.util.Maze;
 import mazegenerator.util.Wall;
 
@@ -40,11 +42,24 @@ public class MazeGeneratorGUI extends Application {
     private boolean generated = false;
     private int pathIndex = 0;
 
-    private Generator generator = new DFSGenerator();
+    private Generator dfsGenerator = new DFSGenerator();
+    private Generator kruskalGenerator = new KruskalGenerator();
+    private ArrayList<Cell> path;
 
-    EventHandler generateMaze = new EventHandler<ActionEvent>() {
+    EventHandler generateMazeUsingDFS = new EventHandler<ActionEvent>() {
         public void handle(ActionEvent event) {
-            maze = generator.generate(ROWS, COLUMNS);
+            maze = dfsGenerator.generate(ROWS, COLUMNS);
+            path = dfsGenerator.creationPath();
+            generated = true;
+            cleanCanvas(canvas);
+            infoBar.setText("generated " + maze);
+        }
+    };
+
+    EventHandler generateMazeUsingKruskal = new EventHandler<ActionEvent>() {
+        public void handle(ActionEvent event) {
+            maze = kruskalGenerator.generate(ROWS, COLUMNS);
+            path = kruskalGenerator.creationPath();
             generated = true;
             cleanCanvas(canvas);
             infoBar.setText("generated " + maze);
@@ -63,8 +78,8 @@ public class MazeGeneratorGUI extends Application {
 
         new AnimationTimer() {
             public void handle(long now) {
-                if (generated && pathIndex < generator.creationPath().size()) {
-                    Cell c = generator.creationPath().get(pathIndex);
+                if (generated && pathIndex < path.size()) {
+                    Cell c = path.get(pathIndex);
                     pathIndex++;
 
                     drawWalls(gc, c);
@@ -94,13 +109,18 @@ public class MazeGeneratorGUI extends Application {
     private HBox tools() {
         HBox t = new HBox();
         t.setSpacing(20);
-        Button generateButton = new Button("generate");
-        generateButton.setOnAction(generateMaze);
-        t.getChildren().addAll(generateButton, infoBar);
+        Button dfsGenerateButton = new Button("generate (Depth First Search)");
+        dfsGenerateButton.setOnAction(generateMazeUsingDFS);
+        
+        Button kruskalGenerateButton = new Button("generate (Kruskal)");
+        kruskalGenerateButton.setOnAction(generateMazeUsingKruskal);
+        
+        t.getChildren().addAll(dfsGenerateButton, kruskalGenerateButton, infoBar);
         return t;
     }
 
     private void cleanCanvas(Canvas canvas) {
+        pathIndex = 0;
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -108,7 +128,7 @@ public class MazeGeneratorGUI extends Application {
     }
 
     private String generatorInfo() {
-        return this.generator.toString() + " - " + this.ROWS + "x" + this.COLUMNS;
+        return "Maze Generator" + " - " + this.ROWS + "x" + this.COLUMNS;
     }
 
     public static void main(String[] args) {
