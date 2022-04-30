@@ -14,7 +14,7 @@ Lataa projekti:
 
 `git clone git@github.com:petroleh/tiralabra.git`
 
-mene projektin juurihakemistoon (se, jossa sijaitsee tiedosto pom.xml)
-käynnistä ohjelma komennolla
+mene projektin juurihakemistoon (se, jossa sijaitsee tiedosto pom.xml).  
+käynnistä ohjelma komennolla:
 
 `mvn clean javafx:run`
