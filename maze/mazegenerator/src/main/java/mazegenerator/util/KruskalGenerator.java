@@ -100,7 +100,6 @@ public class KruskalGenerator implements Generator {
         for (int column = 0; column < columns; column++) {
             for (int row = 0; row < rows; row++) {
                 Node node = new Node(row, column);
-                System.out.println(node);
                 l.add(node);
                 nodes[row][column] = node;
             }
@@ -108,10 +107,7 @@ public class KruskalGenerator implements Generator {
 
         while (!l.isEmpty()) {
             int i = r.nextInt(l.size());
-            Node r = l.remove(i);
-            System.out.println(r);
-            this.randomNodes.add(r);
-            
+            this.randomNodes.add(l.remove(i));
         }
     }
 
