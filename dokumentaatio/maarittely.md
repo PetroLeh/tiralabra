@@ -1,6 +1,6 @@
-## Alustava määrittelydokumentti
+## Määrittelydokumentti
 
-Tarkoituksena on toteuttaa ainakin kaksi labyrintin tuottavaa algoritmia (DFS ja Kruskal) ja verrata niiden
+Tarkoituksena on toteuttaa kaksi labyrintin tuottavaa algoritmia (DFS ja Kruskal) ja verrata niiden
 tuottamien labyrinttien 'vaativuutta'. Vertailuaineistona on ajat, joita leveyssuuntaisella haulla kestää löytää reitti kulmasta 
 vastakkaiseen kulmaan.
 
